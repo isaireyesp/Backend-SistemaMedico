@@ -33,13 +33,17 @@ public class Diagnostico {
     @Column(length = 2000)
     private String observaciones;
 
+    // ==========================
     // Signos vitales
+    // ==========================
+
     private Double temperatura;
 
     private Integer frecuenciaCardiaca;
 
     private Integer frecuenciaRespiratoria;
 
+    @Column(length = 20)
     private String presionArterial;
 
     private Double peso;
@@ -54,6 +58,15 @@ public class Diagnostico {
     @Column(nullable = false)
     @Builder.Default
     private Boolean altaMedica = false;
+
+    // Relación con la receta médica
+    @OneToOne(
+            mappedBy = "diagnostico",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
+    private Receta receta;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime fechaRegistro;
