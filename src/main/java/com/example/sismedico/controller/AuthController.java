@@ -2,7 +2,6 @@ package com.example.sismedico.controller;
 
 import com.example.sismedico.dto.request.LoginRequest;
 import com.example.sismedico.dto.request.RegisterRequest;
-import com.example.sismedico.dto.response.AuthResponse;
 import com.example.sismedico.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,48 +18,29 @@ public class AuthController {
     private final AuthService authService;
 
     /**
-     * Registrar usuario
+     * Registro de usuario
      */
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(
+    public ResponseEntity<String> register(
             @Valid @RequestBody RegisterRequest request) {
 
-        AuthResponse response = authService.register(request);
+        String respuesta = authService.register(request);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(response);
+                .body(respuesta);
     }
 
     /**
-     * Iniciar sesión
+     * Inicio de sesión
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(
+    public ResponseEntity<String> login(
             @Valid @RequestBody LoginRequest request) {
 
-        AuthResponse response = authService.login(request);
+        String token = authService.login(request);
 
-        return ResponseEntity.ok(response);
-    }
-
-    /**
-     * Obtener perfil del usuario autenticado
-     */
-    @GetMapping("/me")
-    public ResponseEntity<?> me() {
-        return ResponseEntity.ok(authService.me());
-    }
-
-    /**
-     * Cerrar sesión
-     */
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout() {
-
-        authService.logout();
-
-        return ResponseEntity.ok("Sesión cerrada correctamente.");
+        return ResponseEntity.ok(token);
     }
 
 }
